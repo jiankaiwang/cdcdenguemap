@@ -1,6 +1,6 @@
 # CDC Dengue Map
 
-[![Build Status](https://travis-ci.org/jiankaiwang/umap.svg?branch=master)](https://travis-ci.org/jiankaiwang/umap)
+[![Build Status](https://travis-ci.org/jiankaiwang/cdcdenguemap.svg?branch=master)](https://travis-ci.org/jiankaiwang/cdcdenguemap)
 
 
 
