@@ -4,7 +4,7 @@
 var sysconf = {
     "umap_version" : "0.0.1"
     , "availableLang" : "en zh_TW"
-    , "defaultLang" : "en"
+    , "defaultLang" : "zh_TW"
     , "site_description" : "Umap is the general GIS purpose framework based on nodejs."
     , "error_emails_to" : "null"
     , "api_allow_host" : "localhost 127.0.0.1"

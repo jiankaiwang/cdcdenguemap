@@ -90,12 +90,12 @@ app.all('/api/service', api_service.portal);
  * desc : open http / https server 
  * https server use let's encrypt as the example
  */
-var port = { "http" : 8080, "https" : 443 }
+var port = { "http" : 8081, "https" : 443 }
   , allowService = { "http" : true, "https" : false };
 
 if (allowService["http"]) {
   http.createServer(app).listen(port["http"], function(){
-    console.log('UMap listening on port ' + port["http"]);
+    console.log('CDC Dengue Map is listening on port ' + port["http"]);
   });
 }
 
@@ -106,6 +106,6 @@ if (allowService["https"]) {
     ca: fs.readFileSync('/etc/letsencrypt/live/(domain.name)/chain.pem')
   };
   https.createServer(options, app).listen(port["https"], function(){
-    console.log('UMap listening on port ' + port["https"]);
+    console.log('CDC Dengue Map is listening on port ' + port["https"]);
   });
 }
