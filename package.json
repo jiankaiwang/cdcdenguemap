@@ -1,9 +1,12 @@
 {
-  "name": "umap.ai",
+  "name": "cdcdenguemap",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "start-server": "npm start",
+    "test": "mocha test/browsers.js",
+    "ci": "start-server-and-test start-server http://localhost:8081 test"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -23,6 +26,7 @@
     "querystring": "^0.2.0",
     "redis": "^2.8.0",
     "send": "^0.11.1",
+    "start-server-and-test": "^1.4.1",
     "url": "^0.11.0"
   },
   "description": "Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)\r  ([Eclipse Marketplace](http://marketplace.eclipse.org/content/nodeclipse), [site](http://www.nodeclipse.org))",
@@ -34,5 +38,13 @@
     "ai"
   ],
   "author": "JianKai Wang",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiankaiwang/cdcdenguemap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jiankaiwang/cdcdenguemap/issues"
+  },
+  "homepage": "https://github.com/jiankaiwang/cdcdenguemap#readme"
 }

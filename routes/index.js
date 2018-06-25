@@ -25,7 +25,7 @@ exports.index = function(req, res){
   var lang = url.parse(req.url).pathname;
 
   res.render('index', { 
-    title: translater(lang, {'en':'UMap', "zh_TW":'UMap'}),
+    title: translater(lang, {'en':'CDC Dengue Map', "zh_TW":'疾管署登革熱地圖'}),
     searchingtext: translater(lang, {'en':'Searching Text', "zh_TW":'輸入搜尋字串'}),
     login: translater(lang, {'en':'Login Dropbox or Google Drive', "zh_TW":'登入 Dropbox 或 Google Drive'}),
     example: translater(lang, {'en':'Example', "zh_TW":'範例'}),
