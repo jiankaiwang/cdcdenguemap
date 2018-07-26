@@ -38,12 +38,6 @@ function initialMap(previousInfo, callback) {
 			layers: allBaseLayers[0]
 		});
 		
-		// map change event listener
-		var prepareLayers = {};
-		prepareLayers[layerTypeName["osm"]["outdoor"][defaultLang]] = allBaseLayers[0];
-		prepareLayers[layerTypeName["osm"]["grey"][defaultLang]] = allBaseLayers[1];
-		L.control.layers(prepareLayers, null,{position: 'bottomright'}).addTo(mymap);
-		
 		// catch map basemap changing into greyscale event
 		mymap.on('baselayerchange', function (e) {
 			if (e.name == layerTypeName["osm"]["grey"][defaultLang] && (!$('#mapid').hasClass('grayscale'))) {
@@ -125,7 +119,13 @@ function addPointService() {
  */
 function addLegendBody(previousInfo, callback) {
 	$('.legendBody').html(
-		'<div class="row legend-row"><div class="col-xs-2 col-md-2"><div class="circle circle-orange"></div></div><div class="col-xs-6 col-md-6"><span>Position</span></div></div>'
+		'<div class="row legend-row"><i class="fa fa-circle circle-red" aria-hidden="true"></i> <span>' + frontTranslation("daytype1",defaultLang) + '</span></div>'
+		+ '<div class="row legend-row"><i class="fa fa-circle circle-orange-2" aria-hidden="true"></i> <span>' + frontTranslation("daytype2",defaultLang) + '</span></div>'
+		+ '<div class="row legend-row"><i class="fa fa-circle circle-yellow" aria-hidden="true"></i> <span>' + frontTranslation("daytype3",defaultLang) + '</span></div>'
+		+ '<div class="row legend-row"><i class="fa fa-circle circle-gray" aria-hidden="true"></i> <span>' + frontTranslation("daytype4",defaultLang) + '</span></div>'
+		+ '<div class="row legend-row"><div class="rect bg-yellow"></div>&nbsp;<span>' + frontTranslation("clusteringarea",defaultLang) + '</span></div>'
+		+ '<div class="row legend-row"><i class="fa fa-plus-square color-green" aria-hidden="true"></i> <span>' + frontTranslation("ns1hosp",defaultLang) + '</span></div>'
+		+ '<div class="row legend-row"><div class="rect bg-blue"></div>&nbsp;<span>' + frontTranslation("cleanzone",defaultLang) + '</span></div>'
 	);
 }
 
@@ -134,21 +134,44 @@ function addLegendBody(previousInfo, callback) {
  */
 
 
+
+ /*
+  * desc : initializer
+  */
+function initDatepicker() {
+	var getDate = new Date();
+	var beginningdate =  "01/01/2017";
+	var endingDate = getCrtMonth(getDate) + "/" + getCrtDate(getDate) + "/" + getCrtYear(getDate);
+	$('#beginningdate').datetimepicker({
+		format: 'YYYY-MM-DD',
+		defaultDate: beginningdate
+	});
+	$('#endingdate').datetimepicker({
+		format: 'YYYY-MM-DD',
+		defaultDate: endingDate
+	});
+}
+
+function initAllOperations(previous,callback) {
+    try{
+		initDatepicker();
+        callback(null, "");
+    } catch(err) {
+        callback(err);
+    }
+}
+
 /* 
  * desc : main entry 
  */
 $(function() {
 	async.waterfall([
 		apiChecker // api checker
-
-		// base map initialization and is dependent on apichecker
-		, initialMap 
-
-		// add button to locate your current position
-		, addSelfLocBtnToMap 
-
-		// add legend body
-		, addLegendBody
+		, initialMap // base map initialization and is dependent on apichecker
+		, addLocBtnToMap // add button to locate your current position and ns1 hospital button
+		, addMainServiceBtnToMap // add main service buttons
+		, initAllOperations // initialize all operations
+		, addLegendBody // add legend body
 	], function (err, message) {
 		if(err) { 
 			console.log(err); 

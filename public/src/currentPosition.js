@@ -48,16 +48,29 @@ function __showCurrentLocation() {
  * para@previous : previous parameters
  * para@callback : callback function
  */
-function addSelfLocBtnToMap(previous,callback) {
+function addLocBtnToMap(previous,callback) {
     try{
         // current location
         var crtPosLoc = L.control({ position: 'bottomright' });
         crtPosLoc.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'leaflet-control-zoom leaflet-bar leaflet-control');
-            div.style.backgroundColor = 'white';
-            var control_htm = '<a class="leaflet-control-zoom-in" href="#map" title="'
+			div.style.backgroundColor = 'white';
+            var control_htm = '';
+			// play button
+			control_htm += '<a class="leaflet-control-zoom-in" href="#map" title="'
+				+ frontTranslation("timeseries",defaultLang)
+				+ '" role="button" onclick="">' 
+				+ '<i class="fa fa-play main-btn" aria-hidden="true"></i></a>';
+			// ns1 hospital
+			control_htm += '<a class="leaflet-control-zoom-in" href="#map" title="'
+				+ frontTranslation("ns1hosp",defaultLang)
+				+ '" role="button" onclick="">' 
+				+ '<i class="fa fa-h-square main-btn" aria-hidden="true"></i></a>';
+			// self location
+			control_htm += '<a class="leaflet-control-zoom-in" href="#map" title="'
 				+ frontTranslation("selfLocBtn",defaultLang)
-                + '" role="button" onclick="__showCurrentLocation();"><i class="fa fa-location-arrow main-btn" aria-hidden="true"></i></a>';
+				+ '" role="button" onclick="__showCurrentLocation();">' 
+				+ '<i class="fa fa-map-marker main-btn" aria-hidden="true"></i></a>';
             div.innerHTML = control_htm;
             div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
             L.DomEvent.disableClickPropagation(div);

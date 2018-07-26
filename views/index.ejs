@@ -14,12 +14,16 @@
     <link href="/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/node_modules/leaflet/dist/leaflet.css" rel="stylesheet" />
     <link href="/node_modules/leaflet.awesome-markers/dist/leaflet.awesome-markers.css" rel="stylesheet" />      
+    <link href="/node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet" />
+    <link href="/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href='/src/style.css' rel='stylesheet' />
   </head>
   <body>
-    <div id="mapid"></div>
+    <div class="grayscale" id="mapid"></div>
 
     <!-- menu -->
+    <!-- remove the searching bar type of menu
     <div class="menu">
       <div class="container-fluid">
       <div class="row">
@@ -38,11 +42,45 @@
       </div>
       </div>
     </div>
-    <div class="detail display-none">
-      <div class="container-fluid">
+    -->
+    <a href="#" onclick="showNavInfo();">
+      <div class="left-panel">
+        <i class="fa fa-chevron-right fa-half2x" aria-hidden="true"></i>
+      </div>
+    </a>
+
+    <a href="#" onclick="showAdditionalInfo();">
+      <div class="right-panel">
+        <i class="fa fa-chevron-left fa-half2x" aria-hidden="true"></i>
+      </div>
+    </a>
+
+    <!-- logo -->
+    <div class="mark"><img class="logo" src='img/logo2-normal.png'/></div>
+
+    <div class="detail">
+      <div class="clsutering searching-option">
+          日期<input type='text' class="form-control input-date" id='beginningdate'/>至<input type='text' class="form-control input-date" id='endingdate' />
+          位置
+          <select class="selectpicker" multiple data-width="fit" data-size="5" data-max-options="3">
+            <% countryList.forEach(function(item) { %>
+              <% if(item.value == "07") { %>
+              <option value="<%= item.value %>" selected><%= item.name %></option>
+              <% } else { %>
+              <option value="<%= item.value %>"><%= item.name %></option>
+              <% } %>
+            <% }); %>
+          </select> 登革熱 
+          <select class="selectpicker" data-width="fit">
+              <option selected>本土</option>
+              <option>境外移入</option>
+              <option>全部</option>
+            </select>
+          確定病例。
+          <!--<i class="fa fa-search" aria-hidden="true"></i>-->
       </div>
     </div>
-
+  
     <!-- user -->
     <div class="user show-curosr h-center">
       <a href="#" title="<%= login %>" data-toggle="modal" data-target="#loginsection">
@@ -50,8 +88,13 @@
       </a>
     </div>
 
-    <!-- logo -->
-    <div class="mark"><img class="logo" src='img/logo-normal.png'/></div>
+    <!-- CBS -->
+    <div class="broadcast show-curosr h-center leaflet-control-zoom leaflet-bar leaflet-control">
+      <a href="#" id="reportBtn" title="<%= cbswarning %>" data-toggle="modal" data-target="#">
+        <!--<i class="fa fa-info-circle ubtn keep-center" aria-hidden="true"></i>-->
+        <i class="fa fa-bullhorn main-btn v-middle h-center" aria-hidden="true"></i>
+      </a>
+    </div>
 
     <!-- nav -->
     <div id="nav">
@@ -67,26 +110,82 @@
           </a>
         </div>
         <hr class="hr-menu" />
-        <!-- main service -->
+        <!-- sync setting -->
         <div class="row">
-          <a data-toggle="collapse" data-parent="#accordion" href="#example">
+          <a data-toggle="collapse" data-parent="#accordion" href="#syncsetting">
             <div class="col-xs-2 col-md-2">
-              <h4><i class="fa fa-exclamation-triangle v-middle" aria-hidden="true"></i></h4>
+              <h4><i class="fa fa-refresh v-middle" aria-hidden="true"></i></h4>
             </div>
             <div class="col-xs-10 col-md-10">
-              <h4><%= example %></h4>
+              <h4><%= syncsetting %></h4>
             </div>
           </a>
         </div>
-        <div id="example" class="panel-collapse collapse">
-          <div class="row">
-            <div class="col-xs-2 col-md-2"></div>
-            <div class="col-xs-10 col-md-10">
-              <a href="#" title="<%= point %>" onclick="addPointService()">
-                <h5><%= point %> <small class="map-on"></small></h5>
-              </a>
+        <div id="syncsetting" class="panel-collapse collapse">
+          <div class="enlarge-row">
+            <div class="row">
+              <div class="col-xs-2 col-md-2"></div>
+              <div class="col-xs-10 col-md-10">
+                <div class="input-slider-ctd">
+                <h5><label class="checkbox-inline">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="mini" data-onstyle="primary"> 
+                  <i class="fa fa-users v-middle" aria-hidden="true"></i> <%= clusteringzone %>
+                </label></h5>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2 col-md-2"></div>
+              <div class="col-xs-10 col-md-10">
+                <div class="input-slider-ctd">
+                <h5><label class="checkbox-inline">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="mini" data-onstyle="primary"> 
+                  <i class="fa fa-flag v-middle" aria-hidden="true"></i> <%= spreading %>
+                </label></h5>
+                </div>                
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2 col-md-2"></div>
+              <div class="col-xs-10 col-md-10">
+                <h5><label class="checkbox-inline">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="mini" data-onstyle="primary"> 
+                  <i class="fa fa-bar-chart v-middle" aria-hidden="true"></i> <%= trend %>
+                </label></h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2 col-md-2"></div>
+              <div class="col-xs-10 col-md-10">
+                <h5><label class="checkbox-inline">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="mini" data-onstyle="primary"> 
+                  <i class="fa fa-plane v-middle" aria-hidden="true"></i> <%= overseas %>
+                </label></h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2 col-md-2"></div>
+              <div class="col-xs-10 col-md-10">
+                <h5><label class="checkbox-inline">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="mini" data-onstyle="primary"> 
+                  <i class="fa fa-fire-extinguisher v-middle" aria-hidden="true"></i> <%= prevention %>
+                </label></h5>
+              </div>
             </div>
           </div>
+        </div>
+        <!-- legend -->
+        <div class="row">
+          <a data-toggle="collapse" data-parent="#accordion" href="#enableLegend">
+            <div class="col-xs-2 col-md-2">
+              <h4><i class="fa fa-list-ul v-middle" aria-hidden="true"></i></h4>
+            </div>
+            <div class="col-xs-10 col-md-10">
+              <h4><%= enableLegend %></h4>
+            </div>
+          </a>
+        </div>
+        <div id="enableLegend" class="panel-collapse collapse">
           <div class="row">
             <div class="col-xs-2 col-md-2"></div>
             <div class="col-xs-10 col-md-10">
@@ -96,14 +195,39 @@
             </div>
           </div>
           <div class="row">
-              <div class="col-xs-2 col-md-2"></div>
-              <div class="col-xs-10 col-md-10">
-                <a href="#" title="<%= polygon %>" onclick="">
-                  <h5><%= polygon %> <small class="map-on"></small></h5>
-                </a>
+            <div class="col-xs-2 col-md-2"></div>
+            <div class="col-xs-10 col-md-10">
+              <a href="#" title="<%= point %>" onclick="addPointService()">
+                <h5><%= point %> <small class="map-on"></small></h5>
+              </a>
+            </div>
+          </div>
+        </div>             
+        <hr class="hr-menu" />
+        <!-- map style -->
+        <div class="row">
+          <a data-toggle="collapse" data-parent="#accordion" href="#mapstyle">
+            <div class="col-xs-2 col-md-2">
+              <h4><i class="fa fa-map v-middle" aria-hidden="true"></i></h4>
+            </div>
+            <div class="col-xs-10 col-md-10">
+              <h4><%= mapstyle %></h4>
+            </div>
+          </a>
+        </div>
+        <div id="mapstyle" class="panel-collapse collapse">
+          <div class="enlarge-row">
+            <div class="row">
+              <div class="col-xs-6 col-md-6 no-padding-right">
+                <button type="button" class="btn btn-default btn-sm full-btn" onclick="javascript: changeOuterLayer();"><%= outdoorlayer %></button>
+              </div>
+              <div class="col-xs-6 col-md-6 no-padding-left">
+                <button type="button" class="btn btn-default btn-sm full-btn" onclick="javascript: changeGrayLayer();"><%= graylayer %></button>
               </div>
             </div>
-        </div>     
+          </div>
+        </div>
+        <!-- main service -->
         <div class="row">
           <a data-toggle="collapse" data-parent="#accordion" href="#editor">
             <div class="col-xs-2 col-md-2">
@@ -144,7 +268,7 @@
           </div>							
         </div>	        
         <hr class="hr-menu" />
-        <!-- additional information -->
+        <!-- information -->
         <div class="row">
           <a href="<%= changelangurl %>">
             <div class="col-xs-2 col-md-2">
@@ -156,8 +280,41 @@
           </a>
         </div>
         <div class="row">
+          <a href="#">
+            <div class="col-xs-2 col-md-2">
+              <h4><i class="fa fa-info-circle v-middle" aria-hidden="true"></i></h4>
+            </div>
+            <div class="col-xs-10 col-md-10">
+              <h4><%= datainfo %></h4>
+            </div>
+          </a>
+        </div>
+        <!-- data status -->
+        <div class="row">
+          <a data-toggle="collapse" data-parent="#accordion" href="#datastatus">
+            <div class="col-xs-2 col-md-2">
+              <h4><i class="fa fa-database v-middle" aria-hidden="true"></i></h4>
+            </div>
+            <div class="col-xs-10 col-md-10">
+              <h4><%= datastatus %></h4>
+            </div>
+          </a>
+        </div>
+        <div id="datastatus" class="panel-collapse collapse">
+          <div class="enlarge-row">
+            <div class="row">
+              <div class="col-xs-2 col-md-2"></div>
+              <div class="col-xs-10 col-md-10">
+                <div class="input-slider-ctd">
+                <h5><i class="fa fa-circle sync-green" aria-hidden="true"></i> <%= syncdatabase %></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-xs-12 col-md-12">
-            <a href="https://github.com/jiankaiwang/umap" target=_blank><h5><%= sourcecode %></h5></a>
+            <a href="https://github.com/jiankaiwang/cdcdenguemap" target=_blank><h5><%= sourcecode %></h5></a>
           </div>
         </div>
         <div class="row">
@@ -166,6 +323,23 @@
           </div>
         </div>
       </div>	
+    </div>
+
+    <!-- right panel -->
+    <div id="additional">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-10 col-md-10">
+            <h3><%= additionalInfoTitle %></h3>
+          </div>
+          <a href="#">
+            <div class="col-xs-2 col-md-2 show-curosr" onclick="showAdditionalInfo();">
+              <h3><i class="fa fa-times" aria-hidden="true"></i></h3>
+            </div>
+          </a>
+        </div>
+        <hr class="hr-menu" />
+      </div>
     </div>
 
     <!-- icon tip -->
@@ -214,11 +388,17 @@
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>	
     <script src="/node_modules/leaflet/dist/leaflet.js"></script>
     <script src="/node_modules/leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js"></script>  
+    <script src="/node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <script src="/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/node_modules/moment/min/moment.min.js"></script>  
+    <script src="/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="/async/async.min.js"></script>
     <script src="/seed/Common.js"></script>
+    <script src="/seed/TimeCounter.js"></script>
     <script src="/src/config.js"></script>  
     <script src="/src/currentPosition.js"></script>  
     <script src="/src/addMenu.js"></script>
+    <script src="/src/mainService.js"></script>
     <script src="/src/general.js"></script>  
   </body>
 </html>

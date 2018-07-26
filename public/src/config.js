@@ -46,7 +46,7 @@ layerTypeName = {
 } 
  
 var attributionInfo = {
-	"osm" : 'Mapdata &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, UMap &copy; 2017'
+	"osm" : 'Mapdata &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, CDC Dengue Map &copy; 2017'
 };
 
 var outdoorLayer = L.tileLayer(
@@ -73,5 +73,20 @@ function frontTranslation(item, lang) {
  * language translation
  */
 var front_translation = {
-    "selfLocBtn": { "en": "Current Position", "zh_TW": "定位" }
+	"selfLocBtn": { "en": "Current Position", "zh_TW": "定位" },
+	"clusteringzone": {'en':'Clustering', "zh_TW":'聚集警示'},
+	"spreading": {'en':'Spreading', "zh_TW":'動態地圖'},
+	"trend": {'en':'Trend', "zh_TW":'病例趨勢'},
+	"overseas": {'en':'Overseas', "zh_TW":'境外移入'},
+	"prevention": {'en':'Overseas', "zh_TW":'防治資訊'},
+	"cbswarning": {'en':'CBS Warning', "zh_TW":'細胞廣播訊息'},
+	"timeseries": {'en':'Time Series', "zh_TW":'時間序列'},
+	"ns1hosp": {'en':'NS1 Hospital', "zh_TW":'NS1 醫療院所'},
+	"daytype1": {'en':'Onset in 7 days', "zh_TW":'發病日7日內'},
+	"daytype2": {'en':'Onset during 8-14 days', "zh_TW":'發病日8-14日內'},
+	"daytype3": {'en':'Onset during 15-30 days', "zh_TW":'發病日15-30日內'},
+	"daytype4": {'en':'Onset over 30 days', "zh_TW":'發病日超過30日'},
+	"clusteringarea": {'en':'Clustering Zone', "zh_TW":'聚集區域'},
+	"ns1hosp": {'en':'NS1 Hospital', "zh_TW":'NS1 快篩院所'},
+	"cleanzone": {'en':'Clean Zone', "zh_TW":'查核區'},
 };
