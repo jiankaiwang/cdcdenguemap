@@ -16,7 +16,8 @@ var sc = require('./configure/sysconfig')
   , session = require('express-session')
   , path = require('path')
   , bodyParser = require('body-parser')
-  , app = express();
+  , app = express()
+  , assert = require('assert');
 
 var api = require('./routes/api')
   , api_service = require('./routes/api_service');
@@ -24,31 +25,46 @@ var api = require('./routes/api')
 /* 
   * desc : session settings, 
   * note : this must before app.use()
+  * using:
+  * be sure you have doing "req.session.save();"
+  * before you redirect the page
   */
 if(! sc.sysconf["use-redis"]) {
+  var cookieID = wo.getSessionHash();
   app.use(express.cookieParser());
   app.use(session({
-    secret: wo.getSessionHash(), 
+    secret: cookieID, 
     cookie: {maxAge: 30 * 60 * 1000},	// existing time period : ms
-    resave: false,
+    resave: true,
     saveUninitialized: true
   }));
 } else {
   var redis = require("redis")
-  , redisStore = require('connect-redis')(session)
-  , client = redis.createClient();
+  , redisStore = require('connect-redis')(session);
+
+  var client = redis.createClient(
+    sc.sysconf['redisServer']['port'], 
+    sc.sysconf['redisServer']['host'], 
+    {auth_pass: sc.sysconf['redisServer']['password']}
+  );
+
+  client.on("error", function (err) {
+    console.log("Error " + err);
+    assert(err instanceof redis.ReplyError);
+  });
 
   app.use(express.cookieParser());
   app.use(session({
     secret: wo.getSessionHash(),
-    store: new redisStore({ host: 
-      sc.sysconf["redisServer"]["host"], 
+    store: new redisStore({ 
+      host: sc.sysconf["redisServer"]["host"], 
       port: sc.sysconf["redisServer"]["port"], 
+      secret: sc.sysconf['redisServer']['password'],
       client: client, 
       ttl : sc.sysconf["redisServer"]["ttl"]
     }),
     saveUninitialized: true,
-    resave: false
+    resave: true
   }));
 }
 
@@ -90,22 +106,19 @@ app.all('/api/service', api_service.portal);
  * desc : open http / https server 
  * https server use let's encrypt as the example
  */
-var port = { "http" : 8081, "https" : 443 }
-  , allowService = { "http" : true, "https" : false };
-
-if (allowService["http"]) {
-  http.createServer(app).listen(port["http"], function(){
-    console.log('CDC Dengue Map is listening on port ' + port["http"]);
+if (sc.sysconf["allowService"]["http"]) {
+  http.createServer(app).listen(sc.sysconf["allowServicePort"]["http"], function(){
+    console.log('Service is listening on port ' + sc.sysconf["allowServicePort"]["http"]);
   });
 }
 
-if (allowService["https"]) {
+if (sc.sysconf["allowService"]["https"]) {
   var options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/(domain.name)/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/(domain.name)/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/(domain.name)/chain.pem')
+    key: fs.readFileSync(sc.sysconf["https-cert-path"]["key"]),
+    cert: fs.readFileSync(sc.sysconf["https-cert-path"]["cert"]),
+    ca: fs.readFileSync(sc.sysconf["https-cert-path"]["ca"])
   };
-  https.createServer(options, app).listen(port["https"], function(){
-    console.log('CDC Dengue Map is listening on port ' + port["https"]);
+  https.createServer(options, app).listen(sc.sysconf["allowServicePort"]["https"], function(){
+    console.log('Service is listening on port ' + sc.sysconf["allowServicePort"]["https"]);
   });
 }

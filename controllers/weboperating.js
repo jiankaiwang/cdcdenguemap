@@ -6,7 +6,7 @@ var crypto = require('crypto')
  * desc : necessary function 
  */
 function getSessionHash() {	
-	var appNames = "travelfeet";
+	var appNames = "cdcdenguemap";
 	var date = new Date();
 	var rawHashCode = 
 		appNames + '-' +

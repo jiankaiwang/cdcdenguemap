@@ -32,7 +32,9 @@ A:active {
 	text-decoration: none;
 }
 A:hover {
-	color: rgba(0,162,232,1);
+	/*color: rgba(0,162,232,1);*/
+	color: rgba(194,84,81,1);
+	font-weight: bold;
 }
 
 .marker-add {
@@ -67,6 +69,35 @@ A.tmpRemove {
 	text-align: center;
 }
 
+.bg-yellow {
+	background-color: rgba(255,204,14,1);
+}
+
+.bg-blue {
+	background-color: rgba(0,0,255,1);
+}
+
+/* main control */
+.searching-option Button {
+	border: 0px;
+    background-color: rgba(255,255,255,0);
+    font-size: 16px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.input-date {
+	width: 110px;
+	background-color: rgba(255,255,255,0);
+	border: 0px;
+	font-size: 16px;
+	display: inline;
+	cursor: pointer;
+	text-decoration: underline;
+	height: 14px;
+	padding: 10px 10px;
+}
+
 /* menu */
 .menu {
 	padding-top: 5px;
@@ -76,21 +107,41 @@ A.tmpRemove {
     top: 10px;
     left: 10px;
 	background-color: rgba(255,255,255,1);
-	width: 320px;
+	width: 300px;
 	border: 2px solid rgba(200,200,200,1);
 	height: 48px;
 }
 
 .detail {
-	padding-top: 5px;
-	padding-bottom: 5px;
-	z-index: 900;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    z-index: 900;
     position: absolute;
-    top: 60px;
-	left: 10px;
-	width: 320px;
-	border: 2px solid rgba(200,200,200,1);
-	background-color: rgba(255,255,255,1);
+	top: 55px;
+	left: 8px;
+    max-width: 300px;
+    min-width: 180px;
+    background-color: rgba(255,255,255,0);
+    /* border: 1px solid #D4D4D4; */
+    font-size: 16px;
+	font-weight: bolder;
+	background-color: rgba(255,255,255,0.6);
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,1);
+}
+
+.detail a {
+	text-decoration: underline;
+}
+
+.detail .btn {
+	line-height: 14px;	
+}
+
+.clsutering {
+	margin-left: 10px;
+	margin-right: 10px;
+	clear: both;
 }
 
 .display-none {
@@ -139,6 +190,21 @@ input[type="text"]:focus {
 	-webkit-border-radius: 15px;
 }
 
+/* broadcast */
+.broadcast {
+	z-index: 900;
+    position: absolute;
+    top: 50px;
+	right: 10px;
+	border: 2px solid rgba(0,0,0,0.2);
+	background-color: rgba(255,255,255,1);
+}
+
+/* main service */
+.main-btn {
+	font-size: 20px;
+}
+
 /* legend */
 .legend {
 	z-index: 900;
@@ -151,6 +217,13 @@ input[type="text"]:focus {
 	-webkit-border-radius: 5px;
 	padding: 5px;
 	width: 150px;
+}
+
+.rect {
+    width: 12px;
+    height: 14px;
+    position: relative;
+	float: left;
 }
 
 .legend-row {
@@ -177,13 +250,33 @@ input[type="text"]:focus {
     border: 1px solid rgba(0,0,0,1);
 }
 
+.circle-red {
+	color: rgba(255,0,0,1);
+}
+
+.circle-orange-2 {
+	color: rgba(255,140,0,1);
+}
+
+.circle-yellow {
+	color: rgba(255,215,0,1);
+}
+
+.circle-gray {
+	color: rgba(169,169,169,1);
+}
+
+.color-green {
+	color: rgba(34,177,76,1);
+}
+
 /* logo */
 .mark {
-	width: 120px;
+	width: 180px;
     z-index: 900;
     position: absolute;
-    bottom: 28px;
-    right: 46%;
+	top: 10px;
+	left: 10px;
     background-color: rgba(255,255,255,0);
 }
 
@@ -193,7 +286,7 @@ input[type="text"]:focus {
 }
 
 .logo {
-	width: 140%;
+	width: 120%;
 }
 
 .logo_nav {
@@ -220,6 +313,34 @@ input[type="text"]:focus {
     filter: grayscale(100%);
 }
 
+/* left panel */
+.left-panel {
+	top: 30%;
+	left: 0px;
+	position: absolute;	
+	z-index: 1000;
+	background: rgba(255,255,255,1);
+	padding: 8px 5px;
+	border-left: 1px solid #D4D4D4;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.right-panel {
+	top: 30%;
+	right: 0px;
+	position: absolute;	
+	z-index: 1000;
+	background: rgba(255,255,255,1);
+	padding: 8px 5px;
+	border-right: 1px solid #D4D4D4;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.left-panel i,
+.right-panel i {
+	color: rgba(20,20,20,0.8);
+}
+
 /* nav style */
 #nav {
 	width: 0%;
@@ -233,21 +354,61 @@ input[type="text"]:focus {
     overflow-y: auto;
 }
 #nav::-webkit-scrollbar,
-#detail::-webkit-scrollbar {
+#detail::-webkit-scrollbar,
+#additional::-webkit-scrollbar {
 	width: 5px;
 	height: 1px;
 	background-color: rgba(200,200,200,0.5);
 }
 
 #nav::-webkit-scrollbar-track,
-#detail::-webkit-scrollbar-track {
+#detail::-webkit-scrollbar-track,
+#additional::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
 	background-color: rgba(200,200,200,0.2);
 }
 
 #nav::-webkit-scrollbar-thumb,
-#detail::-webkit-scrollbar-thumb {
+#detail::-webkit-scrollbar-thumb,
+#additional::-webkit-scrollbar-thumb {
 	background-color: #000000;
+}
+
+.no-padding-left {
+	padding-left: 0px;
+}
+
+.no-padding-right {
+	padding-right: 0px
+}
+
+.full-btn {
+	width: 100%;
+}
+
+.nav-tip {
+	font-size: 18px;
+}
+
+.sync-red {
+	color: rgba(237, 28, 36, 1);
+}
+
+.sync-green {
+	color: rgba(34, 177, 76, 1);
+}
+
+/* additional */
+#additional {
+	width: 0%;
+	height: 100%;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	z-index: 1000;
+	background-color: rgba(255,255,255,1);
+	overflow: hidden;
+    overflow-y: auto;
 }
 
 /* umap button */
